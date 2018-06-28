@@ -1,3 +1,3 @@
 # tabtrack
 
-Track group tabs, especially useful for trips where not everyone pays equal amounts
+Automated reminders for both parties when a debt is incurred
