@@ -17,6 +17,7 @@
 export default {
   data () {
     return {
+      name: 'TabDebtor',
       debtor: this.value
     }
   },

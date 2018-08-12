@@ -41,19 +41,16 @@
       		    label-for="debtor"
 		    horizontal
 		    >
-        <debtor :index=0 v-model="debtor"
-		@input="(obj) => this.changeDebtor(obj.index, obj.value)"
-	></debtor>
+        <tab-debtor :index=0 v-model="debtor"
+		    @input="(obj) => changeDebtor(obj.index, obj.value)"/>
       </b-form-group>
       <b-form-group v-for="(item, index) in extraDebtors" :key="index"
       		    :label="'Extra Debtor ' + (index + 1)"
 		    horizontal
-		    label-sr-only=true
+		    label-sr-only
       >
-        <debtor :index="index + 1" v-model="extraDebtors[index]"
-	          @input="(obj) => this.changeDebtor(obj.index, obj.value)"
-	      	  >
-	</debtor>
+        <tab-debtor :index="index + 1" v-model="extraDebtors[index]"
+	            @input="(obj) => changeDebtor(obj.index, obj.value)"/>
       </b-form-group>
       <b-form-row v-if="canAddRow">
 	<b-col offset="3">
@@ -65,7 +62,7 @@
 </template>
 
 <script>
-import Debtor from './Debtor.vue'
+import TabDebtor from './TabDebtor.vue'
 
 export default {
   name: 'home',
@@ -90,13 +87,13 @@ export default {
     changeDebtor (index, val) {
       if (index === 0) {
         this.debtor = val
-      } else if (index > 0 && index < this.debtor.length) {
-        this.extraDebtors.splice(index, 1, val)
+      } else if (index > 0 && index <= this.debtor.length) {
+        this.extraDebtors.splice(index - 1, 1, val)
       }
     }
   },
   components: {
-    Debtor
+    TabDebtor
   }
 }
 </script>

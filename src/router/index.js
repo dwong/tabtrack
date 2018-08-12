@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import CreateTab from '@/components/CreateTab'
+import TabCreate from '@/components/TabCreate'
 
 Vue.use(Router)
 
@@ -9,7 +9,7 @@ export default new Router({
     {
       path: '/',
       name: 'Home',
-      component: CreateTab
+      component: TabCreate
     }
   ]
 })
