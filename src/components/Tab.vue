@@ -66,6 +66,9 @@ import TabDebtor from './TabDebtor.vue'
 
 export default {
   name: 'home',
+  components: {
+    TabDebtor
+  },
   data () {
     return {
       description: '',
@@ -77,7 +80,9 @@ export default {
   },
   computed: {
     canAddRow () {
-      return this.debtor !== '' && (this.extraDebtors.length === 0 || this.extraDebtors.every((val) => { return val && val !== '' }))
+      return this.debtor !== '' &&
+             (this.extraDebtors.length === 0 ||
+             this.extraDebtors.every((val) => { return val && val !== '' }))
     }
   },
   methods: {
@@ -91,9 +96,6 @@ export default {
         this.extraDebtors.splice(index - 1, 1, val)
       }
     }
-  },
-  components: {
-    TabDebtor
   }
 }
 </script>
