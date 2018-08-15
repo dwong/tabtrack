@@ -9,7 +9,8 @@ export default new Router({
     {
       path: '/',
       name: 'Tab',
-      component: Tab
+      component: Tab,
+      props: (route) => (route.query.t ? { tab: JSON.parse(route.query.t) } : {})
     }
   ]
 })

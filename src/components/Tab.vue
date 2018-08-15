@@ -10,19 +10,19 @@
 		      type="text"
 		      required
 		      placeholder="Lunch @ Joe's"
-		      v-model="description">
+		      v-model="tab.description">
         </b-form-input>
       </b-form-group>
       <b-form-group label="How Much?"
-      		    label-for="amount"
-		    horizontal
+                    label-for="amount"
+                    horizontal
             	    >
 	<b-input-group prepend="$">
 	  <b-form-input id="amount"
-	  		type="number"
-			min="0.00"
-			step="any"
-			v-model="amount">
+                  type="number"
+                  min="0.00"
+                  step="any"
+                  v-model="tab.amount">
 	  </b-form-input>
 	</b-input-group>
       </b-form-group>
@@ -34,28 +34,40 @@
 		      type="text"
 		      required
 		      placeholder="Alice"
-		      v-model="payer">
+		      v-model="tab.payer">
         </b-form-input>
       </b-form-group>
       <b-form-group label="Who Owes?"
-      		    label-for="debtor"
-		    horizontal
+                    label-for="debtor"
+                    horizontal
 		    >
-        <tab-debtor :index=0 v-model="debtor"
-		    @input="(obj) => changeDebtor(obj.index, obj.value)"/>
+        <tab-debtor :index=0
+                    v-model="tab.debtor"
+                    @input="(obj) => changeDebtor(obj.index, obj.value)"/>
       </b-form-group>
-      <b-form-group v-for="(item, index) in extraDebtors" :key="index"
+      <b-form-group v-for="(item, index) in tab.extraDebtors" :key="index"
       		    :label="'Extra Debtor ' + (index + 1)"
 		    horizontal
 		    label-sr-only
       >
-        <tab-debtor :index="index + 1" v-model="extraDebtors[index]"
-	            @input="(obj) => changeDebtor(obj.index, obj.value)"/>
+        <tab-debtor :index="index + 1"
+                    v-model="tab.extraDebtors[index]"
+                    @input="(obj) => changeDebtor(obj.index, obj.value)"/>
       </b-form-group>
       <b-form-row v-if="canAddRow">
-	<b-col offset="3">
+	      <b-col offset="3">
           <b-btn @click="addDebtor">+ Add Row</b-btn>
-	</b-col>
+	      </b-col>
+      </b-form-row>
+      <b-form-row>
+        <b-col offset="2" cols="3">
+          <b-button variant="link">Cancel</b-button>
+        </b-col>
+        <b-col offset="2" cols="3">
+          <b-button variant="outline-success"
+                    @click="save"
+          >Save</b-button>
+        </b-col>
       </b-form-row>
     </b-form>
   </div>
@@ -65,36 +77,44 @@
 import TabDebtor from './TabDebtor.vue'
 
 export default {
-  name: 'home',
+  name: 'tabview',
   components: {
     TabDebtor
   },
-  data () {
-    return {
-      description: '',
-      amount: 0.00,
-      payer: '',
-      debtor: '',
-      extraDebtors: []
+  props: {
+    tab: {
+      type: Object,
+      default () {
+        return {
+          description: '',
+          amount: 0.00,
+          payer: '',
+          debtor: '',
+          extraDebtors: []
+        }
+      }
     }
   },
   computed: {
     canAddRow () {
-      return this.debtor !== '' &&
-             (this.extraDebtors.length === 0 ||
-             this.extraDebtors.every((val) => { return val && val !== '' }))
+      return this.tab.debtor !== '' &&
+             (this.tab.extraDebtors.length === 0 ||
+             this.tab.extraDebtors.every((val) => { return val && val !== '' }))
     }
   },
   methods: {
     addDebtor () {
-      this.extraDebtors.push('')
+      this.tab.extraDebtors.push('')
     },
     changeDebtor (index, val) {
       if (index === 0) {
-        this.debtor = val
-      } else if (index > 0 && index <= this.debtor.length) {
-        this.extraDebtors.splice(index - 1, 1, val)
+        this.tab.debtor = val
+      } else if (index > 0 && index <= this.tab.debtor.length) {
+        this.tab.extraDebtors.splice(index - 1, 1, val)
       }
+    },
+    save () {
+      console.log(JSON.stringify(this.tab))
     }
   }
 }
