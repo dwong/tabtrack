@@ -1,16 +1,15 @@
 <template>
-    	<b-input-group>
-          <b-form-input class="js-debtor"
-	  		:id="'debtor' + index"
-			v-model="debtor"
-			>
-          </b-form-input>
-          <b-input-group-append>	
-            <b-btn variant="danger"
-	    	   @click="clearDebtor"
-	    >Clear</b-btn>
-          </b-input-group-append>
-        </b-input-group>  
+    <b-input-group>
+        <b-form-input class="js-debtor"
+	  		              :id="'debtor' + index"
+			                v-model="debtor">
+        </b-form-input>
+        <b-input-group-append>
+          <b-btn variant="danger"
+	    	         @click="clearDebtor"
+	        >Clear</b-btn>
+        </b-input-group-append>
+    </b-input-group>  
 </template>
 
 <script>

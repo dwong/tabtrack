@@ -40,31 +40,33 @@
       <b-form-group label="Who Owes?"
                     label-for="debtor"
                     horizontal
-		    >
+		  >
         <tab-debtor :index=0
                     v-model="tab.debtor"
-                    @input="(obj) => changeDebtor(obj.index, obj.value)"/>
+                    @input="(obj) => changeDebtor(-1, obj.value)"/>
       </b-form-group>
       <b-form-group v-for="(item, index) in tab.extraDebtors" :key="index"
-      		    :label="'Extra Debtor ' + (index + 1)"
-		    horizontal
-		    label-sr-only
+      		          :label="'Extra Debtor ' + (index + 1)"
+		                horizontal
+		                label-sr-only
       >
-        <tab-debtor :index="index + 1"
+        <tab-debtor :index="index"
                     v-model="tab.extraDebtors[index]"
-                    @input="(obj) => changeDebtor(obj.index, obj.value)"/>
+                    @input="(obj) => changeDebtor(obj.index, obj.value)"
+                    />
       </b-form-group>
       <b-form-row v-if="canAddRow">
-	      <b-col offset="3">
-          <b-btn @click="addDebtor">+ Add Row</b-btn>
+	      <b-col offset="2">
+          <b-btn @click="addDebtor" size="sm">+ Add Row</b-btn>
 	      </b-col>
       </b-form-row>
-      <b-form-row>
+      <b-form-row class="cta">
         <b-col offset="2" cols="3">
-          <b-button variant="link">Cancel</b-button>
+          <b-button variant="link" size="lg">Cancel</b-button>
         </b-col>
         <b-col offset="2" cols="3">
           <b-button variant="outline-success"
+                    size="lg"
                     @click="save"
           >Save</b-button>
         </b-col>
@@ -82,7 +84,7 @@ export default {
     TabDebtor
   },
   props: {
-    tab: {
+    tabParam: {
       type: Object,
       default () {
         return {
@@ -93,6 +95,11 @@ export default {
           extraDebtors: []
         }
       }
+    }
+  },
+  data () {
+    return {
+      tab: this.tabParam
     }
   },
   computed: {
@@ -107,10 +114,10 @@ export default {
       this.tab.extraDebtors.push('')
     },
     changeDebtor (index, val) {
-      if (index === 0) {
+      if (index === -1) {
         this.tab.debtor = val
-      } else if (index > 0 && index <= this.tab.debtor.length) {
-        this.tab.extraDebtors.splice(index - 1, 1, val)
+      } else if (index >= 0 && index <= this.tab.debtor.length) {
+        this.tab.extraDebtors.splice(index, 1, val)
       }
     },
     save () {
@@ -124,6 +131,9 @@ export default {
 .create {
   width: 80%;
   margin: 0 auto;
+}
+.cta {
+  margin-top: 3em;
 }
 .form {
   margin-top: 10px;
