@@ -37,21 +37,13 @@
 		      v-model="tab.payer">
         </b-form-input>
       </b-form-group>
-      <b-form-group label="Who Owes?"
-                    label-for="debtor"
-                    horizontal
-		  >
-        <tab-debtor :index=0
-                    v-model="tab.debtors[0]"
-                    @input="(obj) => changeDebtor(0, obj.value)"/>
-      </b-form-group>
-      <b-form-group v-for="(item, index) in extraDebtors" :key="index"
-      		          :label="'Extra Debtor ' + (index + 1)"
+      <b-form-group v-for="(item, index) in tab.debtors" :key="index"
+      		          :label="index == 0 ? 'Who owes?' :'Debtor ' + (index + 1)"
 		                horizontal
-		                label-sr-only
+                    :label-sr-only="index > 0"
       >
-        <tab-debtor :index="index + 1"
-                    v-model="tab.debtors[index + 1]"
+        <tab-debtor :index="index"
+                    v-model="tab.debtors[index]"
                     @input="(obj) => changeDebtor(obj.index, obj.value)"
                     />
       </b-form-group>
