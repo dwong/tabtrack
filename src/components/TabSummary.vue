@@ -5,7 +5,7 @@
            @row-clicked="rowClicked"
   >
     <template slot="alldebtors" slot-scope="data">
-      {{data.item.debtor}}<span v-for="item in data.item.extraDebtors">, {{ item }}</span>
+      {{data.item.debtors[0]}}<span v-for="item in data.item.debtors.slice(1)">, {{ item }}</span>
     </template>
   </b-table>
 </template>
@@ -16,15 +16,13 @@ const tabs = [
     description: 'lunch somewhere',
     amount: 5.50,
     payer: 'Alice',
-    debtor: 'Bob',
-    extraDebtors: ['Charlie']
+    debtors: ['Bob', 'Charlie']
   },
   {
     description: 'dinner elsewhere',
     amount: 10.75,
     payer: 'Bob',
-    debtor: 'Charlie',
-    extraDebtors: []
+    debtors: ['Charlie']
   }
 ]
 

@@ -42,16 +42,16 @@
                     horizontal
 		  >
         <tab-debtor :index=0
-                    v-model="tab.debtor"
-                    @input="(obj) => changeDebtor(-1, obj.value)"/>
+                    v-model="tab.debtors[0]"
+                    @input="(obj) => changeDebtor(0, obj.value)"/>
       </b-form-group>
-      <b-form-group v-for="(item, index) in tab.extraDebtors" :key="index"
+      <b-form-group v-for="(item, index) in extraDebtors" :key="index"
       		          :label="'Extra Debtor ' + (index + 1)"
 		                horizontal
 		                label-sr-only
       >
-        <tab-debtor :index="index"
-                    v-model="tab.extraDebtors[index]"
+        <tab-debtor :index="index + 1"
+                    v-model="tab.debtors[index + 1]"
                     @input="(obj) => changeDebtor(obj.index, obj.value)"
                     />
       </b-form-group>
@@ -91,8 +91,7 @@ export default {
           description: '',
           amount: 0.00,
           payer: '',
-          debtor: '',
-          extraDebtors: []
+          debtors: ['']
         }
       }
     }
@@ -104,20 +103,24 @@ export default {
   },
   computed: {
     canAddRow () {
-      return this.tab.debtor !== '' &&
-             (this.tab.extraDebtors.length === 0 ||
-             this.tab.extraDebtors.every((val) => { return val && val !== '' }))
+      return this.tab.debtors.length === 0 ||
+             this.tab.debtors.every((val) => { return val && val !== '' })
+    },
+    extraDebtors () {
+      if (this.tab.debtors.length > 1) {
+        return this.tab.debtors.slice(1)
+      } else {
+        return []
+      }
     }
   },
   methods: {
     addDebtor () {
-      this.tab.extraDebtors.push('')
+      this.tab.debtors.push('')
     },
     changeDebtor (index, val) {
-      if (index === -1) {
-        this.tab.debtor = val
-      } else if (index >= 0 && index <= this.tab.debtor.length) {
-        this.tab.extraDebtors.splice(index, 1, val)
+      if (index >= 0 && index <= this.tab.debtors.length) {
+        this.tab.debtors.splice(index, 1, val)
       }
     },
     save () {
