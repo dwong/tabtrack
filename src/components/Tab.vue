@@ -22,7 +22,10 @@
                   type="number"
                   min="0.00"
                   step="any"
-                  v-model="tab.amount">
+                  v-model="tab.amount"
+                  :formatter="formatCurrency"
+                  lazy-formatter
+                  >
 	  </b-form-input>
 	</b-input-group>
       </b-form-group>
@@ -116,7 +119,12 @@ export default {
       }
     },
     save () {
+      this.tab.amount = parseFloat(this.tab.amount)
       console.log(JSON.stringify(this.tab))
+    },
+    formatCurrency (value, event) {
+      let valueAsFloat = typeof value.toFixed === 'function' ? value : parseFloat(value)
+      return valueAsFloat.toFixed(2)
     }
   }
 }
