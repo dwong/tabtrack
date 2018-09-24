@@ -17,44 +17,56 @@
                     label-for="amount"
                     horizontal
             	    >
-	<b-input-group prepend="$">
-	  <b-form-input id="amount"
-                  type="number"
-                  min="0.00"
-                  step="any"
-                  v-model="tab.amount"
-                  :formatter="formatCurrency"
-                  lazy-formatter
-                  >
-	  </b-form-input>
-	</b-input-group>
+	                 <b-input-group prepend="$">
+	                    <b-form-input id="amount"
+                      type="number"
+                      min="0.00"
+                      step="any"
+                      v-model="tab.amount"
+                      :formatter="formatCurrency"
+                      lazy-formatter
+                      >
+	                   </b-form-input>
+	                  </b-input-group>
       </b-form-group>
       <b-form-group label="Who Paid?"
 		    label-for="payer"
 		    horizontal
 		    >
-	<b-form-input id="payer"
-		      type="text"
-		      required
-		      placeholder="Alice"
-		      v-model="tab.payer">
+	       <b-form-input id="payer"
+		        type="text"
+	          required
+            placeholder="Alice"
+	          v-model="tab.payer">
         </b-form-input>
       </b-form-group>
-      <b-form-group v-for="(item, index) in tab.debtors" :key="index"
-      		          :label="index == 0 ? 'Who owes?' :'Debtor ' + (index + 1)"
-		                horizontal
-                    :label-sr-only="index > 0"
+      <b-form-group label="Who Owes?"
+        label-for="newDebtor"
+        horizontal
       >
-        <tab-debtor :index="index"
-                    v-model="tab.debtors[index]"
-                    @input="(obj) => changeDebtor(obj.index, obj.value)"
-                    />
+        <b-input-group>
+            <b-form-input
+              v-model="newDebtorName"
+              id="newDebtor"
+            >
+            </b-form-input>
+            <b-input-group-append>
+              <b-btn @click="addDebtor"
+              >+</b-btn>
+            </b-input-group-append>
+        </b-input-group>
       </b-form-group>
-      <b-form-row v-if="canAddRow">
-	      <b-col offset="2">
-          <b-btn @click="addDebtor" size="sm">+ Add Row</b-btn>
-	      </b-col>
-      </b-form-row>
+      <div v-for="(item, index) in tab.members" :key="index"
+	                  :label="'Member ' + (index + 1)"
+		                horizontal
+      >
+
+        <tab-debtor :index="index"
+                    :value="item"
+                    :checked="tab.debtors.indexOf(item) >= 0"
+                    @change="(obj) => changeDebtor(obj.inTab, obj.value)"
+                    />
+      </div>
       <b-form-row class="cta">
         <b-col offset="2" cols="3">
           <b-button variant="link" size="lg">Cancel</b-button>
@@ -72,6 +84,7 @@
 
 <script>
 import TabDebtor from './TabDebtor.vue'
+import _ from 'lodash'
 
 export default {
   name: 'tabview',
@@ -80,42 +93,44 @@ export default {
   },
   props: {
     tabParam: {
-      type: Object,
-      default () {
-        return {
-          description: '',
-          amount: 0.00,
-          payer: '',
-          debtors: ['']
-        }
-      }
+      type: Object
     }
   },
   data () {
     return {
-      tab: this.tabParam
+      tab: {},
+      defaultTab: {
+        description: '',
+        amount: 0.00,
+        payer: '',
+        debtors: [],
+        members: []
+      },
+      newDebtorName: ''
     }
   },
   computed: {
-    canAddRow () {
-      return this.tab.debtors.length === 0 ||
-             this.tab.debtors.every((val) => { return val && val !== '' })
-    },
-    extraDebtors () {
-      if (this.tab.debtors.length > 1) {
-        return this.tab.debtors.slice(1)
-      } else {
-        return []
-      }
-    }
+  },
+  created () {
+    Object.assign(this.tab, this.defaultTab, this.tabParam)
+    this.tab.members = _.union(this.tab.members, this.tab.debtors)
   },
   methods: {
     addDebtor () {
-      this.tab.debtors.push('')
+      if (this.newDebtorName.length > 0) {
+        this.tab.debtors.push(this.newDebtorName)
+        this.tab.members.push(this.newDebtorName)
+        this.newDebtorName = ''
+      }
     },
-    changeDebtor (index, val) {
-      if (index >= 0 && index <= this.tab.debtors.length) {
-        this.tab.debtors.splice(index, 1, val)
+    changeDebtor (inTab, val) {
+      let index = this.tab.debtors.indexOf(val)
+      if (!inTab) {
+        if (index >= 0) {
+          this.tab.debtors.splice(index, 1)
+        }
+      } else if (index === -1) {
+        this.tab.debtors.push(val)
       }
     },
     save () {
