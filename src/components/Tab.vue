@@ -57,8 +57,8 @@
         </b-input-group>
       </b-form-group>
       <div v-for="(item, index) in tab.members" :key="index"
-	                  :label="'Member ' + (index + 1)"
-		                horizontal
+           class="debtor"
+           :label="'Member ' + (index + 1)"
       >
 
         <tab-debtor :index="index"
@@ -146,6 +146,11 @@ export default {
 </script>
 
 <style scoped>
+.debtor {
+  display: inline-block;
+  padding: .5em;
+}
+
 .create {
   width: 80%;
   margin: 0 auto;

@@ -1,9 +1,10 @@
 <template>
-  <b-form-checkbox :id="'debtor' + index"
-                   v-model="partOfTab"
+  <b-button :id="'debtor' + index"
+            :pressed.sync="partOfTab"
+            :variant="partOfTab ? 'primary' : 'secondary'"
   >
     {{ debtor }}
-  </b-form-checkbox>
+  </b-button>
 </template>
 
 <script>
