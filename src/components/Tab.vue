@@ -48,6 +48,7 @@
             <b-form-input
               v-model="newDebtorName"
               id="newDebtor"
+              @keyup.enter.native="addDebtor"
             >
             </b-form-input>
             <b-input-group-append>
