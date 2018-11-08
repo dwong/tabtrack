@@ -136,7 +136,15 @@ export default {
     },
     save () {
       this.tab.amount = parseFloat(this.tab.amount)
-      console.log(JSON.stringify(this.tab))
+      let tabs = localStorage.getItem('tabs')
+      if (tabs == null) {
+        tabs = []
+      } else {
+        tabs = JSON.parse(tabs)
+      }
+      tabs.push(this.tab)
+      localStorage.setItem('tabs', JSON.stringify(tabs))
+      this.$router.push({name: 'TabSummary'})
     },
     formatCurrency (value, event) {
       let valueAsFloat = typeof value.toFixed === 'function' ? value : parseFloat(value)

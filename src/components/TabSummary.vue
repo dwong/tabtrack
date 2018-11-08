@@ -11,26 +11,12 @@
 </template>
 
 <script>
-const tabs = [
-  {
-    description: 'lunch somewhere',
-    amount: 5.50,
-    payer: 'Alice',
-    debtors: ['Bob', 'Charlie']
-  },
-  {
-    description: 'dinner elsewhere',
-    amount: 10.75,
-    payer: 'Bob',
-    debtors: ['Charlie']
-  }
-]
 
 export default {
   name: 'tab-summary',
   data () {
     return {
-      tabs: tabs,
+      tabs: [],
       fields: [
         'description',
         {
@@ -46,6 +32,14 @@ export default {
           label: 'Debtors'
         }
       ]
+    }
+  },
+  created () {
+    const tabs = localStorage.getItem('tabs')
+    if (tabs == null) {
+      this.$router.push({name: 'Tab'})
+    } else {
+      this.tabs = JSON.parse(tabs)
     }
   },
   methods: {
