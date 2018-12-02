@@ -70,7 +70,9 @@
       </div>
       <b-form-row class="cta">
         <b-col offset="2" cols="3">
-          <b-button variant="link" size="lg">Cancel</b-button>
+          <b-button variant="link"
+                    size="lg"
+                    @click="cancel">Cancel</b-button>
         </b-col>
         <b-col offset="2" cols="3">
           <b-button variant="outline-success"
@@ -133,6 +135,9 @@ export default {
       } else if (index === -1) {
         this.tab.debtors.push(val)
       }
+    },
+    cancel () {
+      this.$router.push({name: 'TabSummary'})
     },
     save () {
       this.tab.amount = parseFloat(this.tab.amount)
