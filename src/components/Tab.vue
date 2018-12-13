@@ -103,6 +103,7 @@ export default {
     return {
       tab: {},
       defaultTab: {
+        id: '',
         description: '',
         amount: 0.00,
         payer: '',
@@ -113,6 +114,9 @@ export default {
     }
   },
   computed: {
+    isNewTab () {
+      return this.tab.id.length === 0
+    }
   },
   created () {
     Object.assign(this.tab, this.defaultTab, this.tabParam)
@@ -141,11 +145,9 @@ export default {
     },
     save () {
       this.tab.amount = parseFloat(this.tab.amount)
-      let tabs = localStorage.getItem('tabs')
-      if (tabs == null) {
-        tabs = []
-      } else {
-        tabs = JSON.parse(tabs)
+      let tabs = this.getSavedTabsWithoutCurrentTab()
+      if (this.isNewTab) {
+        this.tab.id = this.generateIdForCurrentTab()
       }
       tabs.push(this.tab)
       localStorage.setItem('tabs', JSON.stringify(tabs))
@@ -154,6 +156,36 @@ export default {
     formatCurrency (value, event) {
       let valueAsFloat = typeof value.toFixed === 'function' ? value : parseFloat(value)
       return valueAsFloat.toFixed(2)
+    },
+    getSavedTabsWithoutCurrentTab () {
+      let tabs = localStorage.getItem('tabs')
+      if (tabs == null) {
+        tabs = []
+      } else {
+        tabs = JSON.parse(tabs)
+      }
+      if (!this.isNewTab) {
+        let currentTabIndex = -1
+        for (let i = 0; i < tabs.length; i++) {
+          if (tabs[i].id === this.tab.id) {
+            currentTabIndex = i
+            break
+          }
+        }
+        if (currentTabIndex !== -1) {
+          tabs.splice(currentTabIndex, 1)
+        }
+      }
+      return tabs
+    },
+    generateIdForCurrentTab () {
+      let text = ''
+      const possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
+
+      for (let i = 0; i < 6; i++) {
+        text += possible.charAt(Math.floor(Math.random() * possible.length))
+      }
+      return text
     }
   }
 }
