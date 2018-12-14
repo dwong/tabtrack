@@ -1,4 +1,5 @@
 <template>
+  <div>
   <b-table hover
            :items="tabs"
            :fields="fields"
@@ -8,6 +9,17 @@
       {{data.item.debtors[0]}}<span v-for="item in data.item.debtors.slice(1)">, {{ item }}</span>
     </template>
   </b-table>
+  <b-form>
+    <b-row class="cta" align-h="center">
+      <b-col cols="4">
+        <b-button variant="primary"
+                  size="lg"
+                  @click="addToTab"
+                  >Add To Tab</b-button>
+      </b-col>
+    </b-row>
+  </b-form>
+</div>
 </template>
 
 <script>
@@ -50,6 +62,9 @@ export default {
           query: { t: JSON.stringify(val) }
         }
       )
+    },
+    addToTab () {
+      this.$router.push({name: 'Tab'})
     }
   }
 }
