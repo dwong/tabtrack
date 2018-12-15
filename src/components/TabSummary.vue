@@ -9,16 +9,16 @@
       {{data.item.debtors[0]}}<span v-for="item in data.item.debtors.slice(1)">, {{ item }}</span>
     </template>
   </b-table>
-  <b-form>
-    <b-row class="cta" align-h="center">
+  <b-container>
+    <b-row class="cta" align-h="center" align-v="end">
       <b-col cols="4">
         <b-button variant="primary"
                   size="lg"
                   @click="addToTab"
-                  >Add To Tab</b-button>
+                  >New Entry</b-button>
       </b-col>
     </b-row>
-  </b-form>
+  </b-container>
 </div>
 </template>
 
@@ -69,3 +69,9 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+.cta {
+  margin-top: 3em;
+}
+</style>
