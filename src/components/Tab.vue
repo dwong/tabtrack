@@ -1,6 +1,8 @@
 <template>
   <div class="create">
-    <font-awesome-icon icon="file-invoice-dollar" size="8x"></font-awesome-icon>
+    <font-awesome-icon icon="file-invoice-dollar" size="8x"
+    class="d-none d-lg-inline"
+    ></font-awesome-icon>
     <b-form class="form">
       <b-form-group label="Description"
 		    label-for="description"
