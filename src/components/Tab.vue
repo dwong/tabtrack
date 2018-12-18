@@ -12,6 +12,7 @@
 		      type="text"
 		      required
 		      placeholder="Lunch @ Joe's"
+		      v-focus
 		      v-model="tab.description">
         </b-form-input>
       </b-form-group>
@@ -95,6 +96,13 @@ export default {
   name: 'tabview',
   components: {
     TabDebtor
+  },
+  directives: {
+    focus: {
+      inserted: function (el) {
+        el.focus()
+      }
+    }
   },
   props: {
     tabParam: {
